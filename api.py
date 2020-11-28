@@ -1,5 +1,7 @@
 from flask import Flask
-from flask_restful import Resource, Api, reqparse, abort, marshal, fields
+#from flask_restful import Resource, Api, reqparse, abort, marshal, fields
+from flask_restful import marshal, reqparse, fields
+from flask_restful_swagger_3 import  Resource, Api, swagger
 
 # Initialize Flask
 app = Flask(__name__)
@@ -34,6 +36,8 @@ bookFields = {
 
 # Resource: Individual Book Routes
 class Book(Resource):
+    @swagger.tags(['book'])
+    @swagger.reorder_with(bookFields, description="Returns a book")
     def __init__(self):
         # Initialize The Flsak Request Parser and add arguments as in an expected request
         self.reqparse = reqparse.RequestParser()
@@ -84,6 +88,8 @@ class Book(Resource):
 
 
 class BookList(Resource):
+    @swagger.tags(['bookList'])
+    @swagger.reorder_with(books, description="Returns a book list")
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
